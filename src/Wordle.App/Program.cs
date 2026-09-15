@@ -1,1 +1,9 @@
-﻿Console.WriteLine("Hello, World!");
+﻿namespace Wordle.App;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+
+    }
+}
