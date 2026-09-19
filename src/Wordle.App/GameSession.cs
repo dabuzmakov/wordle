@@ -5,18 +5,18 @@ public class GameSession
     public int MaxAttempts { get; init; }
     public string Answer { get; init; }
     public string[] History { get; init; }
-    public GameStatus GameStatus { get; private set; }
+    public GameStatus Status { get; private set; }
     public int UsedAttempts { get; private set; }
 
-    public GameSession(WordSelector wordSelector, int maxAttempts)
+    public GameSession(string answer, int maxAttempts)
     {
         if (maxAttempts <= 0)
             throw new ArgumentOutOfRangeException($"Количество попыток должно быть целым положительным числом");
 
         MaxAttempts = maxAttempts;
-        Answer = wordSelector.GetRandomWord();
+        Answer = answer;
         History = new string[MaxAttempts];
-        GameStatus = GameStatus.InProgress;
+        Status = GameStatus.InProgress;
     }
 
     public void IncrementAttempts()
