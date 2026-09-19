@@ -27,6 +27,8 @@ public class GameController
 
         while (session.Status == GameStatus.InProgress)
         {
+            var word = Console.ReadLine();
+            var guess = new Guess();
             
         }
     }
