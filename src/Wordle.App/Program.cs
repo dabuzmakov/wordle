@@ -6,13 +6,16 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.OutputEncoding = Encoding.UTF8;
+        Console.OutputEncoding = Encoding.GetEncoding("utf-16");
+        Console.InputEncoding = Encoding.GetEncoding("utf-16");
 
-        var renderer = new GameRenderer();
         var config = new GameConfig();
+        var words = new WordDictionary(config.WordLength);
 
-        var controller = new GameController(config, renderer);
-        var gameLoop = new GameLoop(controller, renderer);
+        var controller = new GameController(config, words);
+        var renderer = new GameRenderer();
+
+        var gameLoop = new GameLoop(controller, renderer, words);
 
         gameLoop.Run();
     }

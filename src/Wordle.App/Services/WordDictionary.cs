@@ -2,6 +2,8 @@
 
 public class WordDictionary
 {
+    public int WordLength { get; init; }
+
     public WordDictionary(int wordLength)
     {
         if (wordLength <= 0)
@@ -10,6 +12,8 @@ public class WordDictionary
         foreach (var word in Words.Values)
             if (word.Length != wordLength)
                 throw new ArgumentException($"Слово '{word}' должно содержать {wordLength} букв.");
+
+        WordLength = wordLength;
     }
 
     public readonly Dictionary<int, string> Words = new()
