@@ -15,18 +15,15 @@ public class GameLoop
     {
         while (true)
         {
-            if (Console.KeyAvailable)
+            switch (Console.ReadKey().Key)
             {
-                switch (Console.ReadKey().Key)
-                {
-                    case ConsoleKey.D1:
-                        _controller.StartNewGame();
-                        break;
+                case ConsoleKey.D1:
+                    _controller.StartNewGame();
+                    break;
 
-                    case ConsoleKey.D2:
-                        Environment.Exit(0);
-                        break;
-                }
+                case ConsoleKey.D2:
+                    Environment.Exit(0);
+                    break;
             }
         }
     }

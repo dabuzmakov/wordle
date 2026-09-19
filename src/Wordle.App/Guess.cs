@@ -10,7 +10,7 @@ public class Guess
     };
 
     private readonly int _wordLength;
-    private string _word = string.Empty;
+    public string Word { get; private set; } = string.Empty;
 
     public Guess(string word, int wordLength)
     {
@@ -23,19 +23,19 @@ public class Guess
         var isValid = true;
         messages = new List<string>();
 
-        if (string.IsNullOrEmpty(_word))
+        if (string.IsNullOrEmpty(Word))
         {
             messages.Add($"Слово не может быть пустым ((");
             return false;
         }
 
-        if (_word.Length != _wordLength)
+        if (Word.Length != _wordLength)
         {
             messages.Add($"Длина слова должна быть {_wordLength} символов,");
             isValid = false;
         }
 
-        foreach (var sym in _word)
+        foreach (var sym in Word)
         {
             if (!_correctСharacters.Contains(sym))
             {
@@ -51,6 +51,7 @@ public class Guess
     public void ChangeWord(string word)
     {
         if (!string.IsNullOrEmpty(word))
-            _word = word.ToLower().Trim();
+            Word = word.ToLowerInvariant().Trim();
+        else Word = string.Empty;
     }
 }
