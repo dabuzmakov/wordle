@@ -54,7 +54,6 @@ Wordle/
 │       │   └── LetterResult.cs
 │       ├── Services/
 │       │   ├── GameController.cs
-│       │   ├── WordDictionary.cs
 │       │   └── WordSelector.cs
 │       ├── GameConfig.cs
 │       ├── Program.cs
