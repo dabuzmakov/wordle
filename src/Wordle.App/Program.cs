@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Wordle.App.ConsoleUI;
 
 namespace Wordle.App;
 
@@ -10,10 +11,12 @@ public class Program
         Console.InputEncoding = Encoding.GetEncoding("utf-16");
 
         var config = new GameConfig();
+        var input = new ConsoleInput();
+
         var controller = new GameController(config);
         var renderer = new GameRenderer();
 
-        var gameLoop = new GameLoop(controller, renderer);
+        var gameLoop = new GameLoop(controller, renderer, input);
 
         gameLoop.Run();
     }

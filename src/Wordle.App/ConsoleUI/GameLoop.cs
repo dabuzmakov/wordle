@@ -5,12 +5,17 @@ namespace Wordle.App;
 public class GameLoop
 {
     private readonly GameController _controller;
-    private readonly GameRenderer _renderer;
+    private readonly IGameRenderer _renderer;
+    private readonly IUserInput _input;
 
-    public GameLoop(GameController controller, GameRenderer renderer)
+    public GameLoop(
+        GameController controller, 
+        IGameRenderer renderer, 
+        IUserInput input)
     {
         _controller = controller;
         _renderer = renderer;
+        _input = input;
     }
 
     public void Run()
@@ -20,10 +25,9 @@ public class GameLoop
 
         while (true)
         {
-            _renderer.Clear();
             _renderer.ShowHomeScreen(maxAttempts, wordLength);
 
-            switch (Console.ReadKey(true).Key)
+            switch (_input.ReadKey(true))
             {
                 case ConsoleKey.D1:
                     var session = _controller.CreateNewGame();
@@ -31,8 +35,9 @@ public class GameLoop
                     break;
 
                 case ConsoleKey.D2:
-                    ProcessExit();
-                    break;
+                    _renderer.Clear();
+                    _renderer.ShowBanner(ConsoleColor.Red, ConsoleBanner.ExitBanner);
+                    return;
             }
         }
     }
@@ -66,7 +71,7 @@ public class GameLoop
         else _renderer.ShowBanner(ConsoleColor.Red, ConsoleBanner.LoseBanner);
 
         _renderer.ShowContinueMessage();
-        Console.ReadKey();
+        _input.ReadKey(true);
     }
 
     private void ProcessInput(Guess guess)
@@ -82,12 +87,5 @@ public class GameLoop
         Console.Write(new string(' ', 75));
 
         Console.CursorVisible = false;
-    }
-
-    private void ProcessExit()
-    {
-        _renderer.Clear();
-        _renderer.ShowBanner(ConsoleColor.Red, ConsoleBanner.ExitBanner);
-        Environment.Exit(0);
     }
 }

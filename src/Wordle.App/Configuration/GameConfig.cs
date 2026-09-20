@@ -4,6 +4,7 @@ public class GameConfig
 {
     public int MaxAttempts { get; init; } = 6;
     public int WordLength { get; init; } = 5;
+    public int? DeterminedSeed { get; init; } = null;
 
     public Dictionary<int, string> Words { get; init; } = new()
     {

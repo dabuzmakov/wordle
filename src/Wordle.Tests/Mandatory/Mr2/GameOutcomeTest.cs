@@ -12,7 +12,9 @@ public class GameOutcomeTest
     {
         var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var guess = new Guess(session.Answer, _config);
+
+        var guess = new Guess(_config);
+        guess.SetWord(session.Answer);
 
         controller.ApplyGuess(session, guess);
 
@@ -33,7 +35,9 @@ public class GameOutcomeTest
             while (word == session.Answer)
                 word = wordSelector.GetRandomWord();
 
-            var guess = new Guess(word, _config);
+            var guess = new Guess(_config);
+            guess.SetWord(word);
+
             controller.ApplyGuess(session, guess);
         }
 
@@ -55,7 +59,9 @@ public class GameOutcomeTest
             while (word == session.Answer)
                 word = wordSelector.GetRandomWord();
 
-            var guess = new Guess(word, _config);
+            var guess = new Guess(_config);
+            guess.SetWord(word);
+
             controller.ApplyGuess(session, guess);
         }
 
@@ -68,7 +74,9 @@ public class GameOutcomeTest
     {
         var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var guess = new Guess(session.Answer, _config);
+
+        var guess = new Guess(_config);
+        guess.SetWord(session.Answer);
 
         controller.ApplyGuess(session, guess);
 

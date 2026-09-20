@@ -46,7 +46,7 @@ public class GameController
 
     public GameSession CreateNewGame()
     {
-        var seed = new Random().Next();
+        var seed = Config.DeterminedSeed ?? new Random().Next();
         var wordSelector = new WordSelector(Config.Words, seed);
 
         var answer = wordSelector.GetRandomWord();

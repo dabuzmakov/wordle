@@ -1,4 +1,5 @@
 using Wordle.App;
+using Wordle.App.ConsoleUI;
 
 namespace Wordle.Tests.Mandatory.Mr1;
 
@@ -35,8 +36,9 @@ public class DictionaryTest
 
                 var controller = new GameController(config);
                 var renderer = new GameRenderer();
+                var input = new ConsoleInput();
 
-                var gameLoop = new GameLoop(controller, renderer);
+                var gameLoop = new GameLoop(controller, renderer, input);
 
                 gameLoop.Run();
             }

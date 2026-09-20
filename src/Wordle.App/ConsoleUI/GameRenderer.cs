@@ -2,7 +2,7 @@
 
 namespace Wordle.App;
 
-public class GameRenderer
+public class GameRenderer : IGameRenderer
 {
     private static readonly int _inputBoxLeft = 2;
     private static readonly int _inputBoxTop = 7;

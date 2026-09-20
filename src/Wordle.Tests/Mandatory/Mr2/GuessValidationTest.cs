@@ -13,7 +13,8 @@ public class GuessValidationTest
     [InlineData("")]
     public void WordOfWrongLengthIsRejected(string guess)
     {
-        var invalidGuess = new Guess(guess, _config);
+        var invalidGuess = new Guess(_config);
+        invalidGuess.SetWord(guess);
 
         Assert.False(invalidGuess.IsValid(out _));
     }
@@ -24,7 +25,8 @@ public class GuessValidationTest
     [InlineData("до ма")]
     public void NonLetterInputIsRejected(string guess)
     {
-        var invalidGuess = new Guess(guess, _config);
+        var invalidGuess = new Guess(_config);
+        invalidGuess.SetWord(guess);
 
         Assert.False(invalidGuess.IsValid(out _));
     }
@@ -32,7 +34,8 @@ public class GuessValidationTest
     [Fact(DisplayName = "Слово, которого нет в словаре, отклоняется")]
     public void WordOutsideDictionaryIsRejected()
     {
-        var invalidGuess = new Guess("щщщщщ", _config);
+        var invalidGuess = new Guess(_config);
+        invalidGuess.SetWord("щщщщщ");
 
         Assert.False(invalidGuess.IsValid(out _));
     }
@@ -42,7 +45,9 @@ public class GuessValidationTest
     {
         var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var invalidGuess = new Guess("выа", _config);
+
+        var invalidGuess = new Guess(_config);
+        invalidGuess.SetWord("выа");
 
         Assert.Throws<ArgumentException>(
             () => controller.ApplyGuess(session, invalidGuess));
@@ -56,8 +61,11 @@ public class GuessValidationTest
         var lower = "озеро";
         var upper = "ОЗЕРО";
 
-        var lowerGuess = new Guess(lower, _config);
-        var upperGuess = new Guess(upper, _config);
+        var lowerGuess = new Guess(_config);
+        var upperGuess = new Guess(_config);
+
+        lowerGuess.SetWord(lower);
+        upperGuess.SetWord(upper);
 
         Assert.Equal(lowerGuess.Word, upperGuess.Word);
     }
