@@ -6,14 +6,13 @@ namespace Wordle.Tests.Mandatory.Mr2;
 public class GameOutcomeTest
 {
     private readonly GameConfig _config = new GameConfig();
-    private readonly WordDictionary _words = new WordDictionary(5);
 
     [Fact(DisplayName = "Угаданное слово переводит сессию в статус WIN")]
     public void CorrectGuessWinsTheGame()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var guess = new Guess(session.Answer, _words);
+        var guess = new Guess(session.Answer, _config);
 
         controller.ApplyGuess(session, guess);
 
@@ -23,9 +22,9 @@ public class GameOutcomeTest
     [Fact(DisplayName = "После 6 неудачных попыток сессия переходит в статус LOSE")]
     public void SixFailedAttemptsLoseTheGame()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var wordSelector = new WordSelector(_words.Words, 12134543);
+        var wordSelector = new WordSelector(_config.Words, 12134543);
 
         for (var i = 0; i < 6; i++)
         {
@@ -34,7 +33,7 @@ public class GameOutcomeTest
             while (word == session.Answer)
                 word = wordSelector.GetRandomWord();
 
-            var guess = new Guess(word, _words);
+            var guess = new Guess(word, _config);
             controller.ApplyGuess(session, guess);
         }
 
@@ -44,10 +43,10 @@ public class GameOutcomeTest
     [Fact(DisplayName = "При поражении показывается загаданное слово")]
     public void AnswerIsRevealedOnLoss()
     {
-        var answer = _words.Words.First().Value;
-        var controller = new GameController(_config, _words);
+        var answer = _config.Words.First().Value;
+        var controller = new GameController(_config);
         var session = new GameSession(answer, _config.MaxAttempts);
-        var wordSelector = new WordSelector(_words.Words, 12134543);
+        var wordSelector = new WordSelector(_config.Words, 12134543);
 
         for (var i = 0; i < 6; i++)
         {
@@ -56,7 +55,7 @@ public class GameOutcomeTest
             while (word == session.Answer)
                 word = wordSelector.GetRandomWord();
 
-            var guess = new Guess(word, _words);
+            var guess = new Guess(word, _config);
             controller.ApplyGuess(session, guess);
         }
 
@@ -67,9 +66,9 @@ public class GameOutcomeTest
     [Fact(DisplayName = "Завершённая партия больше не принимает попытки")]
     public void FinishedGameRejectsFurtherGuesses()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var guess = new Guess(session.Answer, _words);
+        var guess = new Guess(session.Answer, _config);
 
         controller.ApplyGuess(session, guess);
 

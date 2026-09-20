@@ -8,27 +8,38 @@ public class DictionaryTest
     [Fact(DisplayName = "Словарь содержит не меньше 50 слов")]
     public void DictionaryContainsAtLeastFiftyWords()
     {
-        var dictionary = new WordDictionary(5);
+        var config = new GameConfig();
+        var dictionary = config.Words;
 
-        Assert.True(dictionary.Words.Count >= 50);
+        Assert.True(dictionary.Count >= 50);
     }
 
     [Fact(DisplayName = "Все слова словаря состоят ровно из 5 букв")]
     public void AllWordsAreExactlyFiveLettersLong()
     {
-        var dictionary = new WordDictionary(5);
+        var config = new GameConfig();
+        var dictionary = config.Words;
 
-        Assert.All(dictionary.Words.Values, word => Assert.Equal(5, word.Length));
+        Assert.All(dictionary.Values, word => Assert.Equal(5, word.Length));
     }
 
     [Fact(DisplayName = "Пустой словарь приводит к ошибке, а не к запуску игры без слова")]
     public void EmptyDictionaryIsRejected()
     {
-        var emptyDictionary = new Dictionary<int, string>();
-        var randomSeed = 342432;
+        Assert.Throws<ArgumentException>(() =>
+            {
+                var config = new GameConfig
+                {
+                    Words = new Dictionary<int, string>()
+                };
 
-        Assert.Throws<ArgumentException>(
-            () => new WordSelector(emptyDictionary, randomSeed)
+                var controller = new GameController(config);
+                var renderer = new GameRenderer();
+
+                var gameLoop = new GameLoop(controller, renderer);
+
+                gameLoop.Run();
+            }
         );
     }
 }

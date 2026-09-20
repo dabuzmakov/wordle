@@ -5,15 +5,14 @@ namespace Wordle.Tests.Mandatory.Mr2;
 /// <summary>Обязательные тесты: раскраска букв.</summary>
 public class LetterMatchingTest
 {
-    private readonly WordDictionary _words = new WordDictionary(5);
     private readonly GameConfig _config = new GameConfig();
 
     [Fact(DisplayName = "Базовый случай: загадано \"озеро\", ввод \"арбуз\" -> ❌🟡❌❌🟡")]
     public void BasicCase()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = new GameSession("озеро", _config.MaxAttempts);
-        var guess = new Guess("арбуз", _words);
+        var guess = new Guess("арбуз", _config);
 
         var result = controller.ApplyGuess(session, guess);
 
@@ -32,9 +31,9 @@ public class LetterMatchingTest
     [Fact(DisplayName = "Полное совпадение: загадано \"озеро\", ввод \"озеро\" -> ✅✅✅✅✅")]
     public void ExactMatch()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = new GameSession("озеро", _config.MaxAttempts);
-        var guess = new Guess("озеро", _words);
+        var guess = new Guess("озеро", _config);
 
         var result = controller.ApplyGuess(session, guess);
 
@@ -44,9 +43,9 @@ public class LetterMatchingTest
     [Fact(DisplayName = "Повторяющиеся буквы: загадано \"сорок\", ввод \"оооом\" -> ❌✅❌✅❌")]
     public void RepeatedLettersAreNotDoubleCounted()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = new GameSession("сорок", _config.MaxAttempts);
-        var guess = new Guess("оооом", _words);
+        var guess = new Guess("оооом", _config);
 
         var result = controller.ApplyGuess(session, guess);
 
@@ -65,9 +64,9 @@ public class LetterMatchingTest
     [Fact(DisplayName = "Ни одна буква не подошла: все позиции ❌")]
     public void NoMatchingLetters()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = new GameSession("озеро", _config.MaxAttempts);
-        var guess = new Guess("акула", _words);
+        var guess = new Guess("акула", _config);
 
         var result = controller.ApplyGuess(session, guess);
 

@@ -6,7 +6,6 @@ namespace Wordle.Tests.Mandatory.Mr2;
 public class GuessValidationTest
 {
     private readonly GameConfig _config = new GameConfig();
-    private readonly WordDictionary _words = new WordDictionary(5);
 
     [Theory(DisplayName = "Слово не из 5 букв отклоняется")]
     [InlineData("дом")]
@@ -14,7 +13,7 @@ public class GuessValidationTest
     [InlineData("")]
     public void WordOfWrongLengthIsRejected(string guess)
     {
-        var invalidGuess = new Guess(guess, _words);
+        var invalidGuess = new Guess(guess, _config);
 
         Assert.False(invalidGuess.IsValid(out _));
     }
@@ -25,7 +24,7 @@ public class GuessValidationTest
     [InlineData("до ма")]
     public void NonLetterInputIsRejected(string guess)
     {
-        var invalidGuess = new Guess(guess, _words);
+        var invalidGuess = new Guess(guess, _config);
 
         Assert.False(invalidGuess.IsValid(out _));
     }
@@ -33,7 +32,7 @@ public class GuessValidationTest
     [Fact(DisplayName = "Слово, которого нет в словаре, отклоняется")]
     public void WordOutsideDictionaryIsRejected()
     {
-        var invalidGuess = new Guess("щщщщщ", _words);
+        var invalidGuess = new Guess("щщщщщ", _config);
 
         Assert.False(invalidGuess.IsValid(out _));
     }
@@ -41,9 +40,9 @@ public class GuessValidationTest
     [Fact(DisplayName = "Некорректный ввод не тратит попытку")]
     public void InvalidInputDoesNotConsumeAttempt()
     {
-        var controller = new GameController(_config, _words);
+        var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var invalidGuess = new Guess("выа", _words);
+        var invalidGuess = new Guess("выа", _config);
 
         Assert.Throws<ArgumentException>(
             () => controller.ApplyGuess(session, invalidGuess));
@@ -57,8 +56,8 @@ public class GuessValidationTest
         var lower = "озеро";
         var upper = "ОЗЕРО";
 
-        var lowerGuess = new Guess(lower, _words);
-        var upperGuess = new Guess(upper, _words);
+        var lowerGuess = new Guess(lower, _config);
+        var upperGuess = new Guess(upper, _config);
 
         Assert.Equal(lowerGuess.Word, upperGuess.Word);
     }
