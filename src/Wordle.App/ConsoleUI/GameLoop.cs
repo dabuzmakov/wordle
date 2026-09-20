@@ -1,4 +1,6 @@
-﻿namespace Wordle.App;
+﻿using Wordle.App.ConsoleUI;
+
+namespace Wordle.App;
 
 public class GameLoop
 {
@@ -13,9 +15,13 @@ public class GameLoop
 
     public void Run()
     {
+        var maxAttempts = _controller.Config.MaxAttempts;
+        var wordLength = _controller.Config.WordLength;
+        _renderer.ShowHomeScreen(maxAttempts, wordLength);
+
         while (true)
         {
-            switch (Console.ReadKey().Key)
+            switch (Console.ReadKey(true).Key)
             {
                 case ConsoleKey.D1:
                     var session = _controller.CreateNewGame();
@@ -23,6 +29,8 @@ public class GameLoop
                     break;
 
                 case ConsoleKey.D2:
+                    Console.Clear();
+                    _renderer.ShowBanner(0, 0, ConsoleColor.Red, ConsoleBanner.ExitBanner);
                     Environment.Exit(0);
                     break;
             }
@@ -41,8 +49,6 @@ public class GameLoop
             }
 
             var result = _controller.ApplyGuess(session, guess);
-
-            
         }
     }
 }
