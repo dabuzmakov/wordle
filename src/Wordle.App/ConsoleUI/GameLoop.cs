@@ -29,26 +29,52 @@ public class GameLoop
                     break;
 
                 case ConsoleKey.D2:
-                    Console.Clear();
-                    _renderer.ShowBanner(0, 0, ConsoleColor.Red, ConsoleBanner.ExitBanner);
-                    Environment.Exit(0);
+                    ProcessExit();
                     break;
             }
         }
     }
 
-    public void ProcessGame(GameSession session)
+    private void ProcessGame(GameSession session)
     {
+        _renderer.Clear();
+        _renderer.ShowBanner(ConsoleColor.Yellow, ConsoleBanner.LogoBanner);
+
         while (session.Status == GameStatus.InProgress)
         {
-            var guess = new Guess(Console.ReadLine(), _controller.Config);
+            _renderer.ShowInputBox(session.UsedAttempts, session.MaxAttempts);
+
+            var guess = new Guess(_controller.Config);
+            ProcessInput(guess);
 
             while (!guess.IsValid(out var messages))
             {
-                guess.ChangeWord(Console.ReadLine());
+                _renderer.ShowErrors(messages);
+                ProcessInput(guess);
             }
 
+            _renderer.ClearErrors();
+
             var result = _controller.ApplyGuess(session, guess);
+            _renderer.ShowGuessResult(result, session.UsedAttempts);
         }
+    }
+
+    private void ProcessInput(Guess guess)
+    {
+        var (left, top) = (_renderer.InputLeft, _renderer.InputTop);
+
+        Console.SetCursorPosition(left, top);
+        guess.SetWord(Console.ReadLine());
+
+        Console.SetCursorPosition(left, top);
+        Console.Write(new string(' ', 75));
+    }
+
+    private void ProcessExit()
+    {
+        _renderer.Clear();
+        _renderer.ShowBanner(ConsoleColor.Red, ConsoleBanner.ExitBanner);
+        Environment.Exit(0);
     }
 }
