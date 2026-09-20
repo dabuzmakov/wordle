@@ -2,21 +2,17 @@
 
 public class GameController
 {
-    private readonly GameConfig _config;
-    private readonly WordDictionary _wordDictionary;
+    public GameConfig Config { get; init; }
 
-    public GameController(GameConfig config, WordDictionary wordDictionary)
+    public GameController(GameConfig config)
     {
-        _wordDictionary = wordDictionary;
-        _config = config;
+        config.Validate();
+        Config = config;
     }
 
     public GuessResult ApplyGuess(GameSession session, Guess guess)
     {
-        if (!guess.IsValid(out var messages))
-            throw new ArgumentException(string.Join(", ", messages));
-
-        var result = new GuessResult(guess.Word);
+        var result = new GuessResult(guess);
         var remainingLetters = new Dictionary<char, int>();
 
         for (var i = 0; i < guess.Word.Length; i++)
@@ -51,10 +47,10 @@ public class GameController
     public GameSession CreateNewGame()
     {
         var seed = new Random().Next();
-        var wordSelector = new WordSelector(_wordDictionary.Words, seed);
+        var wordSelector = new WordSelector(Config.Words, seed);
 
         var answer = wordSelector.GetRandomWord();
-        var session = new GameSession(answer, _config.MaxAttempts);
+        var session = new GameSession(answer, Config.MaxAttempts);
 
         return session;
     }

@@ -7,9 +7,6 @@ public class WordSelector
 
     public WordSelector(Dictionary<int, string> words, int seed)
     {
-        if (words == null || words.Count == 0)
-            throw new ArgumentException("Словарь не может быть пустым.");
-
         _words = words;
         _seed = seed;
     }

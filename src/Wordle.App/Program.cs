@@ -10,12 +10,10 @@ public class Program
         Console.InputEncoding = Encoding.GetEncoding("utf-16");
 
         var config = new GameConfig();
-        var words = new WordDictionary(config.WordLength);
-
-        var controller = new GameController(config, words);
+        var controller = new GameController(config);
         var renderer = new GameRenderer();
 
-        var gameLoop = new GameLoop(controller, renderer, words);
+        var gameLoop = new GameLoop(controller, renderer);
 
         gameLoop.Run();
     }

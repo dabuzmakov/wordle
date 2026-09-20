@@ -5,10 +5,13 @@ public class GuessResult
     public string Word { get; init; }
     public LetterResult[] Colors { get; private set; }
 
-    public GuessResult(string word)
+    public GuessResult(Guess guess)
     {
-        Word = word;
-        Colors = new LetterResult[word.Length];
+        if (!guess.IsValid(out var messages))
+            throw new ArgumentException(string.Join(", ", messages));
+
+        Word = guess.Word;
+        Colors = new LetterResult[Word.Length];
     }
 
     public bool IsAllGreen()

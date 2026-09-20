@@ -2,7 +2,7 @@
 
 public class Guess
 {
-    private readonly WordDictionary _wordDictionary;
+    private readonly GameConfig _config;
 
     private readonly HashSet<char> _correctCharacters = new() 
     {
@@ -13,10 +13,10 @@ public class Guess
 
     public string Word { get; private set; }
 
-    public Guess(string word, WordDictionary wordDictionary)
+    public Guess(string word, GameConfig config)
     {
+        _config = config;
         ChangeWord(word);
-        _wordDictionary = wordDictionary;
     }
 
     public bool IsValid(out List<string> messages)
@@ -30,9 +30,9 @@ public class Guess
             return false;
         }
 
-        if (Word.Length != _wordDictionary.WordLength)
+        if (Word.Length != _config.WordLength)
         {
-            messages.Add($"Длина слова должна быть {_wordDictionary.WordLength} символов");
+            messages.Add($"Длина слова должна быть {_config.WordLength} символов");
             isValid = false;
         }
 
@@ -46,9 +46,9 @@ public class Guess
             }
         }
 
-        if (!_wordDictionary.Words.ContainsValue(Word))
+        if (!_config.Words.ContainsValue(Word))
         {
-            messages.Add($"Слова не существует");
+            messages.Add($"Слово не существует");
             isValid = false;
         }
 

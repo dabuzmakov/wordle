@@ -2,16 +2,11 @@
 
 public class GameLoop
 {
-    private readonly WordDictionary _wordDictionary;
     private readonly GameController _controller;
     private readonly GameRenderer _renderer;
 
-    public GameLoop(
-        GameController controller, 
-        GameRenderer renderer, 
-        WordDictionary wordDictionary)
+    public GameLoop(GameController controller, GameRenderer renderer)
     {
-        _wordDictionary = wordDictionary;
         _controller = controller;
         _renderer = renderer;
     }
@@ -23,7 +18,6 @@ public class GameLoop
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.D1:
- 
                     var session = _controller.CreateNewGame();
                     ProcessGame(session);
                     break;
@@ -39,7 +33,7 @@ public class GameLoop
     {
         while (session.Status == GameStatus.InProgress)
         {
-            var guess = new Guess(Console.ReadLine(), _wordDictionary);
+            var guess = new Guess(Console.ReadLine(), _controller.Config);
 
             while (!guess.IsValid(out var messages))
             {
@@ -47,6 +41,8 @@ public class GameLoop
             }
 
             var result = _controller.ApplyGuess(session, guess);
+
+            
         }
     }
 }
