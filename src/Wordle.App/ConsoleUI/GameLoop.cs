@@ -17,10 +17,12 @@ public class GameLoop
     {
         var maxAttempts = _controller.Config.MaxAttempts;
         var wordLength = _controller.Config.WordLength;
-        _renderer.ShowHomeScreen(maxAttempts, wordLength);
 
         while (true)
         {
+            _renderer.Clear();
+            _renderer.ShowHomeScreen(maxAttempts, wordLength);
+
             switch (Console.ReadKey(true).Key)
             {
                 case ConsoleKey.D1:
@@ -58,10 +60,19 @@ public class GameLoop
             var result = _controller.ApplyGuess(session, guess);
             _renderer.ShowGuessResult(result, session.UsedAttempts);
         }
+
+        if (session.Status == GameStatus.Win)
+            _renderer.ShowBanner(ConsoleColor.Green, ConsoleBanner.WinBanner);
+        else _renderer.ShowBanner(ConsoleColor.Red, ConsoleBanner.LoseBanner);
+
+        _renderer.ShowContinueMessage();
+        Console.ReadKey();
     }
 
     private void ProcessInput(Guess guess)
     {
+        Console.CursorVisible = true;
+
         var (left, top) = (_renderer.InputLeft, _renderer.InputTop);
 
         Console.SetCursorPosition(left, top);
@@ -69,6 +80,8 @@ public class GameLoop
 
         Console.SetCursorPosition(left, top);
         Console.Write(new string(' ', 75));
+
+        Console.CursorVisible = false;
     }
 
     private void ProcessExit()

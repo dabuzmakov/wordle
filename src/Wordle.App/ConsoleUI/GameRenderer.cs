@@ -29,6 +29,7 @@ public class GameRenderer
 
     public void ShowBanner(ConsoleColor color, string text)
     {
+        Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = color;
         Console.Write(text);
         Console.ResetColor();
@@ -36,8 +37,6 @@ public class GameRenderer
 
     public void ShowInputBox(int usedAttempts, int maxAttempts)
     {
-        Console.CursorVisible = true;
-
         Console.SetCursorPosition(_inputBoxLeft, _inputBoxTop);
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Write($"ПОПЫТКА {usedAttempts + 1} ИЗ {maxAttempts}");
@@ -114,6 +113,15 @@ public class GameRenderer
         Console.ResetColor();
     }
 
+    public void ShowContinueMessage()
+    {
+        ClearErrors();
+        Console.SetCursorPosition(ErrorLeft, ErrorTop);
+        Console.WriteLine("Нажмите любую клавишу");
+        Console.SetCursorPosition(ErrorLeft, ErrorTop + 1);
+        Console.WriteLine("чтобы продолжить...");
+    }
+
     private void ShowColoredSquare(ConsoleColor color)
     {
         Console.ForegroundColor = color;
@@ -164,7 +172,7 @@ public class GameRenderer
 
         Console.WriteLine();
         Console.Write("  ");
-        ShowColoredSquare(ConsoleColor.Red);
+        ShowColoredSquare(ConsoleColor.DarkGray);
         Console.Write($" - свободных вхождений буквы в слове нет");
         Console.WriteLine();
     }

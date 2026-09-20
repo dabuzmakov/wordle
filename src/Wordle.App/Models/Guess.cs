@@ -39,7 +39,7 @@ public class Guess
         {
             if (!_correctCharacters.Contains(sym))
             {
-                messages.Add($"Слово должно содержать буквы русского алфавита");
+                messages.Add($"Слово должно состоять из букв русского алфавита");
                 isValid = false;
                 break;
             }
