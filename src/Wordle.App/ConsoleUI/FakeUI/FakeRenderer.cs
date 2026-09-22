@@ -20,4 +20,12 @@ public class FakeRenderer : IGameRenderer
     public void ShowHomeScreen(int maxAttempts, int wordLength) { }
 
     public void ShowInputBox(int usedAttempts, int maxAttempts) { }
+
+    public void ClearInput(int left, int top, int length) { }
+
+    public void SetCursorPosition(int left, int top) { }
+
+    public void ShowCursor() { }
+
+    public void HideCursor() { }
 }

@@ -79,14 +79,15 @@ Wordle/
 ├── src/
 │   └── Wordle.App/
 │       ├── ConsoleUI/
+|       |   ├── FakeUI/
+|       |   |   ├── FakeRenderer.cs
+|       |   |   └── FakeInput.cs
 │       │   ├── GameLoop.cs
 │       │   ├── GameRenderer.cs
 │       │   ├── IGameRenderer.cs
 │       │   ├── IUserInput.cs
 │       │   ├── ConsoleInput.cs
 │       │   ├── ConsoleBanner.cs
-|       |   ├── FakeRenderer.cs
-|       |   └── FakeInput.cs
 │       ├── Models/
 │       │   ├── GameSession.cs
 │       │   ├── GameStatus.cs

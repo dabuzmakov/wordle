@@ -18,6 +18,21 @@ public class GameRenderer : IGameRenderer
 
     public void Clear() => Console.Clear();
 
+    public void ShowCursor()
+        => Console.CursorVisible = true;
+
+    public void HideCursor()
+        => Console.CursorVisible = false;
+
+    public void SetCursorPosition(int left, int top)
+        => Console.SetCursorPosition(left, top);
+
+    public void ClearInput(int left, int top, int length)
+    {
+        Console.SetCursorPosition(left, top);
+        Console.Write(new string(' ', length));
+    }
+
     public void ShowLine(ConsoleColor color)
     {
         Console.ForegroundColor = color;

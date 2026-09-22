@@ -3,7 +3,10 @@
 public class GameController
 {
     public GameConfig Config { get; init; }
+    public int SessionsCount => _gameSessions.Count();
+
     private readonly WordSelector _wordSelector;
+    private readonly List<GameSession> _gameSessions = new();
 
     public GameController(GameConfig config)
     {
@@ -53,6 +56,7 @@ public class GameController
         var answer = _wordSelector.GetRandomWord();
         var session = new GameSession(answer, Config.MaxAttempts);
 
+        _gameSessions.Add(session);
         return session;
     }
 }

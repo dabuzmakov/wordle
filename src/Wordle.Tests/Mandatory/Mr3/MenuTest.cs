@@ -13,7 +13,10 @@ public class MenuTest
         var controller = new GameController(config);
         var renderer = new FakeRenderer();
 
-        var input = new FakeInput(ConsoleKey.D5, ConsoleKey.D2);
+        var input = new FakeInput(
+            keys: [ConsoleKey.D5, ConsoleKey.D2],
+            lines: null
+        );
 
         var gameLoop = new GameLoop(controller, renderer, input);
         var exception = Record.Exception(() => gameLoop.Run());
@@ -26,17 +29,26 @@ public class MenuTest
     {
         var config = new GameConfig { DeterminedSeed = 67 };
         var controller = new GameController(config);
+        var renderer = new FakeRenderer();
 
-        for (var i = 0; i < 3; i++)
-        {
-            var session = controller.CreateNewGame();
+        var input = new FakeInput(
+            keys: 
+            [
+                ConsoleKey.D1, //новая игра
+                ConsoleKey.Enter, //продолжить
+                ConsoleKey.D1, //новая игра
+                ConsoleKey.Enter, //продолжить
+                ConsoleKey.D1, //новая игра
+                ConsoleKey.Enter, //продолжить
+                ConsoleKey.D2 //выход
+            ],
+            lines: ["сапог", "метро", "пламя"] //ответы
+        );
 
-            var guess = new Guess(config);
-            guess.SetWord(session.Answer);
+        var gameLoop = new GameLoop(controller, renderer, input);
+        gameLoop.Run();
 
-            controller.ApplyGuess(session, guess);
-            Assert.Equal(session.Status, GameStatus.Win);
-        }
+        Assert.Equal(3, controller.SessionsCount);
     }
 
     [Fact(DisplayName = "Детерминированный режим даёт предсказуемый вывод для автопроверки")]

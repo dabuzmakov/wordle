@@ -3,4 +3,5 @@
 public interface IUserInput
 {
     ConsoleKey ReadKey(bool showKey);
+    string? ReadLine();
 }

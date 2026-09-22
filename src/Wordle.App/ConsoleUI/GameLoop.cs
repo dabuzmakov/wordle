@@ -76,16 +76,14 @@ public class GameLoop
 
     private void ProcessInput(Guess guess)
     {
-        Console.CursorVisible = true;
-
         var (left, top) = (_renderer.InputLeft, _renderer.InputTop);
 
-        Console.SetCursorPosition(left, top);
-        guess.SetWord(Console.ReadLine());
+        _renderer.ShowCursor();
+        _renderer.SetCursorPosition(left, top);
 
-        Console.SetCursorPosition(left, top);
-        Console.Write(new string(' ', 75));
+        guess.SetWord(_input.ReadLine());
 
-        Console.CursorVisible = false;
+        _renderer.ClearInput(left, top, 75);
+        _renderer.HideCursor();
     }
 }
