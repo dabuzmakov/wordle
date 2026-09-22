@@ -34,7 +34,7 @@ dotnet test
 Для воспроизводимого запуска игры с фиксированным seed используйте:
 
 ```bash
-dotnet run --project src/Wordle --seed {номер сида}
+dotnet run --project src/Wordle.App --seed {номер сида}
 ```
 
 При использовании одинакового seed и неизменного словаря игра будет генерировать 
