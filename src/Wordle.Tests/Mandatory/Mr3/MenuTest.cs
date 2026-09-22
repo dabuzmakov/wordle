@@ -43,14 +43,16 @@ public class MenuTest
     public void DeterministicModeProducesPredictableOutput()
     {
         var config = new GameConfig { DeterminedSeed = 67 };
-        var controller = new GameController(config);
 
-        var firstSession = controller.CreateNewGame();
-        var secondSession = controller.CreateNewGame();
-        var thirdSession = controller.CreateNewGame();
+        var firstController = new GameController(config);
+        var secondController = new GameController(config);
 
-        Assert.Equal(firstSession.Answer, secondSession.Answer);
-        Assert.Equal(firstSession.Answer, thirdSession.Answer);
-        Assert.Equal(secondSession.Answer, thirdSession.Answer);
+        for (var i = 0; i < 5; i++)
+        {
+            var firstSession = firstController.CreateNewGame();
+            var secondSession = secondController.CreateNewGame();
+
+            Assert.Equal(firstSession.Answer, secondSession.Answer);
+        }
     }
 }

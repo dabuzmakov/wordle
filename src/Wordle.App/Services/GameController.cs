@@ -3,11 +3,15 @@
 public class GameController
 {
     public GameConfig Config { get; init; }
+    private readonly WordSelector _wordSelector;
 
     public GameController(GameConfig config)
     {
         config.Validate();
         Config = config;
+
+        var seed = Config.DeterminedSeed ?? new Random().Next();
+        _wordSelector = new WordSelector(Config.Words, seed);
     }
 
     public GuessResult ApplyGuess(GameSession session, Guess guess)
@@ -46,10 +50,7 @@ public class GameController
 
     public GameSession CreateNewGame()
     {
-        var seed = Config.DeterminedSeed ?? new Random().Next();
-        var wordSelector = new WordSelector(Config.Words, seed);
-
-        var answer = wordSelector.GetRandomWord();
+        var answer = _wordSelector.GetRandomWord();
         var session = new GameSession(answer, Config.MaxAttempts);
 
         return session;
