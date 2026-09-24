@@ -12,7 +12,9 @@ public class LetterMatchingTest
     {
         var controller = new GameController(_config);
         var session = new GameSession("озеро", _config.MaxAttempts);
-        var guess = new Guess("арбуз", _config);
+
+        var guess = new Guess(_config);
+        guess.SetWord("арбуз");
 
         var result = controller.ApplyGuess(session, guess);
 
@@ -33,7 +35,9 @@ public class LetterMatchingTest
     {
         var controller = new GameController(_config);
         var session = new GameSession("озеро", _config.MaxAttempts);
-        var guess = new Guess("озеро", _config);
+
+        var guess = new Guess(_config);
+        guess.SetWord("озеро");
 
         var result = controller.ApplyGuess(session, guess);
 
@@ -45,7 +49,9 @@ public class LetterMatchingTest
     {
         var controller = new GameController(_config);
         var session = new GameSession("сорок", _config.MaxAttempts);
-        var guess = new Guess("оооом", _config);
+
+        var guess = new Guess(_config);
+        guess.SetWord("оооом");
 
         var result = controller.ApplyGuess(session, guess);
 
@@ -66,7 +72,9 @@ public class LetterMatchingTest
     {
         var controller = new GameController(_config);
         var session = new GameSession("озеро", _config.MaxAttempts);
-        var guess = new Guess("акула", _config);
+
+        var guess = new Guess(_config);
+        guess.SetWord("акула");
 
         var result = controller.ApplyGuess(session, guess);
 

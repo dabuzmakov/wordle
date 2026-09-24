@@ -1,21 +1,33 @@
-﻿namespace Wordle.App;
+﻿using Wordle.App.ConsoleUI;
+
+namespace Wordle.App;
 
 public class GameLoop
 {
     private readonly GameController _controller;
-    private readonly GameRenderer _renderer;
+    private readonly IGameRenderer _renderer;
+    private readonly IUserInput _input;
 
-    public GameLoop(GameController controller, GameRenderer renderer)
+    public GameLoop(
+        GameController controller, 
+        IGameRenderer renderer, 
+        IUserInput input)
     {
         _controller = controller;
         _renderer = renderer;
+        _input = input;
     }
 
     public void Run()
     {
+        var maxAttempts = _controller.Config.MaxAttempts;
+        var wordLength = _controller.Config.WordLength;
+
         while (true)
         {
-            switch (Console.ReadKey().Key)
+            _renderer.ShowHomeScreen(maxAttempts, wordLength);
+
+            switch (_input.ReadKey(true))
             {
                 case ConsoleKey.D1:
                     var session = _controller.CreateNewGame();
@@ -23,26 +35,55 @@ public class GameLoop
                     break;
 
                 case ConsoleKey.D2:
-                    Environment.Exit(0);
-                    break;
+                    _renderer.Clear();
+                    _renderer.ShowBanner(ConsoleColor.Red, ConsoleBanner.ExitBanner);
+                    return;
             }
         }
     }
 
-    public void ProcessGame(GameSession session)
+    private void ProcessGame(GameSession session)
     {
+        _renderer.Clear();
+        _renderer.ShowBanner(ConsoleColor.Yellow, ConsoleBanner.LogoBanner);
+
         while (session.Status == GameStatus.InProgress)
         {
-            var guess = new Guess(Console.ReadLine(), _controller.Config);
+            _renderer.ShowInputBox(session.UsedAttempts, session.MaxAttempts);
+
+            var guess = new Guess(_controller.Config);
+            ProcessInput(guess);
 
             while (!guess.IsValid(out var messages))
             {
-                guess.ChangeWord(Console.ReadLine());
+                _renderer.ShowErrors(messages);
+                ProcessInput(guess);
             }
 
-            var result = _controller.ApplyGuess(session, guess);
+            _renderer.ClearErrors();
 
-            
+            var result = _controller.ApplyGuess(session, guess);
+            _renderer.ShowGuessResult(result, session.UsedAttempts);
         }
+
+        if (session.Status == GameStatus.Win)
+            _renderer.ShowBanner(ConsoleColor.Green, ConsoleBanner.WinBanner);
+        else _renderer.ShowBanner(ConsoleColor.Red, ConsoleBanner.LoseBanner);
+
+        _renderer.ShowContinueMessage();
+        _input.ReadKey(true);
+    }
+
+    private void ProcessInput(Guess guess)
+    {
+        var (left, top) = (_renderer.InputLeft, _renderer.InputTop);
+
+        _renderer.ShowCursor();
+        _renderer.SetCursorPosition(left, top);
+
+        guess.SetWord(_input.ReadLine());
+
+        _renderer.ClearInput(left, top, 75);
+        _renderer.HideCursor();
     }
 }

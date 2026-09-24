@@ -3,18 +3,17 @@
 public class WordSelector
 {
     private readonly Dictionary<int, string> _words;
-    private readonly int _seed;
+    private readonly Random _random;
 
     public WordSelector(Dictionary<int, string> words, int seed)
     {
+        _random = new Random(seed);
         _words = words;
-        _seed = seed;
     }
 
     public string GetRandomWord()
     {
-        var random = new Random(_seed);
-        var key = random.Next(_words.Count);
+        var key = _random.Next(_words.Count);
 
         return _words[key];
     }

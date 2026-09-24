@@ -13,10 +13,9 @@ public class Guess
 
     public string Word { get; private set; }
 
-    public Guess(string word, GameConfig config)
+    public Guess(GameConfig config)
     {
         _config = config;
-        ChangeWord(word);
     }
 
     public bool IsValid(out List<string> messages)
@@ -26,7 +25,7 @@ public class Guess
 
         if (string.IsNullOrEmpty(Word))
         {
-            messages.Add($"Слово не может быть пустым ((");
+            messages.Add($"Слово не может быть пустым");
             return false;
         }
 
@@ -40,7 +39,7 @@ public class Guess
         {
             if (!_correctCharacters.Contains(sym))
             {
-                messages.Add($"Слово должно содержать буквы русского алфавита");
+                messages.Add($"Слово должно состоять из букв русского алфавита");
                 isValid = false;
                 break;
             }
@@ -55,7 +54,7 @@ public class Guess
         return isValid;
     }
 
-    public void ChangeWord(string word)
+    public void SetWord(string word)
     {
         if (!string.IsNullOrEmpty(word))
             Word = word.ToLowerInvariant().Trim();
