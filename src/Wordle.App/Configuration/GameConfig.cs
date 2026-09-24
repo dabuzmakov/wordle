@@ -4,6 +4,7 @@ public class GameConfig
 {
     public int MaxAttempts { get; init; } = 6;
     public int WordLength { get; init; } = 5;
+    public int WordsCount { get; init; } = 50;
     public int? DeterminedSeed { get; init; } = null;
 
     public Dictionary<int, string> Words { get; init; } = new()
@@ -67,6 +68,9 @@ public class GameConfig
 
         if (Words == null || Words.Count == 0)
             throw new ArgumentException("Словарь не может быть пустым.");
+
+        if (Words.Count() < WordsCount)
+            throw new ArgumentException($"Количество слов должно быть не менее {WordsCount}");
 
         foreach (var word in Words.Values)
             if (word.Length != WordLength)

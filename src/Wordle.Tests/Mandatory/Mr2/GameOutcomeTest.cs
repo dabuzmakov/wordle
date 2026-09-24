@@ -26,7 +26,9 @@ public class GameOutcomeTest
     {
         var controller = new GameController(_config);
         var session = controller.CreateNewGame();
-        var wordSelector = new WordSelector(_config.Words, 12134543);
+
+        var seed = 123123213;
+        var wordSelector = new WordSelector(_config.Words, seed);
 
         for (var i = 0; i < 6; i++)
         {
@@ -50,7 +52,9 @@ public class GameOutcomeTest
         var answer = _config.Words.First().Value;
         var controller = new GameController(_config);
         var session = new GameSession(answer, _config.MaxAttempts);
-        var wordSelector = new WordSelector(_config.Words, 12134543);
+
+        var seed = 321324234;
+        var wordSelector = new WordSelector(_config.Words, seed);
 
         for (var i = 0; i < 6; i++)
         {

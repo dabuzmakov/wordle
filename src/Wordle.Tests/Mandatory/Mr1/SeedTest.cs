@@ -11,8 +11,9 @@ public class SeedTest
         var config = new GameConfig();
         var dictionary = config.Words;
 
-        var selector1 = new WordSelector(dictionary, 12345);
-        var selector2 = new WordSelector(dictionary, 12345);
+        var seed = 12345;
+        var selector1 = new WordSelector(dictionary, seed);
+        var selector2 = new WordSelector(dictionary, seed);
 
         var word1 = selector1.GetRandomWord();
         var word2 = selector2.GetRandomWord();

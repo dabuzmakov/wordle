@@ -4,8 +4,8 @@ namespace Wordle.App;
 
 public class GameRenderer : IGameRenderer
 {
-    private static readonly int _inputBoxLeft = 2;
-    private static readonly int _inputBoxTop = 7;
+    private const int _inputBoxLeft = 2;
+    private const int _inputBoxTop = 7;
 
     public int ErrorLeft => _inputBoxLeft + 30;
     public int ErrorTop => _inputBoxTop;

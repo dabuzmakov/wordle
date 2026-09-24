@@ -12,7 +12,7 @@ public class DictionaryTest
         var config = new GameConfig();
         var dictionary = config.Words;
 
-        Assert.True(dictionary.Count >= 50);
+        Assert.True(dictionary.Count >= config.WordsCount);
     }
 
     [Fact(DisplayName = "Все слова словаря состоят ровно из 5 букв")]
@@ -20,8 +20,9 @@ public class DictionaryTest
     {
         var config = new GameConfig();
         var dictionary = config.Words;
+        var requiredWordLength = 5;
 
-        Assert.All(dictionary.Values, word => Assert.Equal(5, word.Length));
+       Assert.All(dictionary.Values, word => Assert.Equal(requiredWordLength, word.Length));
     }
 
     [Fact(DisplayName = "Пустой словарь приводит к ошибке, а не к запуску игры без слова")]
