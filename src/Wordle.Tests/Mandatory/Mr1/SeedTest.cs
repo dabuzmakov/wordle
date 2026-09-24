@@ -8,10 +8,12 @@ public class SeedTest
     [Fact(DisplayName = "Одинаковый seed даёт одинаковое загаданное слово")]
     public void SameSeedProducesSameAnswer()
     {
-        var dictionary = new WordDictionary(5);
+        var config = new GameConfig();
+        var dictionary = config.Words;
 
-        var selector1 = new WordSelector(dictionary.Words, 12345);
-        var selector2 = new WordSelector(dictionary.Words, 12345);
+        var seed = 12345;
+        var selector1 = new WordSelector(dictionary, seed);
+        var selector2 = new WordSelector(dictionary, seed);
 
         var word1 = selector1.GetRandomWord();
         var word2 = selector2.GetRandomWord();
@@ -22,7 +24,8 @@ public class SeedTest
     [Fact(DisplayName = "Разные seed'ы дают разные слова хотя бы иногда")]
     public void DifferentSeedsProduceDifferentAnswers()
     {
-        var dictionary = new WordDictionary(5);
+        var config = new GameConfig();
+        var dictionary = config.Words;
 
         var seeds1 = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         var seeds2 = new int[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
@@ -31,8 +34,8 @@ public class SeedTest
 
         for (var i = 0; i < 10; i++)
         {
-            var selector1 = new WordSelector(dictionary.Words, seeds1[i]);
-            var selector2 = new WordSelector(dictionary.Words, seeds2[i]);
+            var selector1 = new WordSelector(dictionary, seeds1[i]);
+            var selector2 = new WordSelector(dictionary, seeds2[i]);
 
             var word1 = selector1.GetRandomWord();
             var word2 = selector2.GetRandomWord();

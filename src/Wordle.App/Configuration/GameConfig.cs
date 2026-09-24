@@ -1,18 +1,13 @@
 ﻿namespace Wordle.App;
 
-public class WordDictionary
+public class GameConfig
 {
-    public WordDictionary(int wordLength)
-    {
-        if (wordLength <= 0)
-            throw new ArgumentOutOfRangeException($"Длина слова должна быть целым положительным числом");
+    public int MaxAttempts { get; init; } = 6;
+    public int WordLength { get; init; } = 5;
+    public int WordsCount { get; init; } = 50;
+    public int? DeterminedSeed { get; init; } = null;
 
-        foreach (var word in Words.Values)
-            if (word.Length != wordLength)
-                throw new ArgumentException($"Слово '{word}' должно содержать {wordLength} букв.");
-    }
-
-    public readonly Dictionary<int, string> Words = new()
+    public Dictionary<int, string> Words { get; init; } = new()
     {
         [0] = "арбуз",
         [1] = "банан",
@@ -59,10 +54,26 @@ public class WordDictionary
         [42] = "шарик",
         [43] = "школа",
         [44] = "агент",
-        [45] = "якорь",
+        [45] = "оооом",
         [46] = "акула",
         [47] = "океан",
-        [48] = "осень",
+        [48] = "озеро",
         [49] = "рыбак",
     };
+
+    public void Validate()
+    {
+        if (WordLength <= 0)
+            throw new ArgumentOutOfRangeException($"Длина слова должна быть целым положительным числом");
+
+        if (Words == null || Words.Count == 0)
+            throw new ArgumentException("Словарь не может быть пустым.");
+
+        if (Words.Count() < WordsCount)
+            throw new ArgumentException($"Количество слов должно быть не менее {WordsCount}");
+
+        foreach (var word in Words.Values)
+            if (word.Length != WordLength)
+                throw new ArgumentException($"Слово '{word}' должно содержать {WordLength} букв.");
+    }
 }
